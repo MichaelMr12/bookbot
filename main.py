@@ -1,5 +1,8 @@
 import asyncio
 import logging
+import platform
+
+from aiogram.client.session.aiohttp import AiohttpSession
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
@@ -25,11 +28,11 @@ async def main():
 
     # Загружаем конфиг в переменную config
     config: Config = load_config()
-
+    session = AiohttpSession(proxy="HTTPS://185.10.129.14:3128/")
     # Инициализируем бот и диспетчер
     bot = Bot(
         token=config.tg_bot.token,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML), session=session
     )
     dp = Dispatcher()
 
@@ -44,5 +47,7 @@ async def main():
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
-
-asyncio.run(main())
+if __name__ == "__main__":
+    if platform.system() == 'Windows':
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    asyncio.run(main())
