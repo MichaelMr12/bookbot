@@ -28,7 +28,7 @@ async def main():
 
     # Загружаем конфиг в переменную config
     config: Config = load_config()
-    session = AiohttpSession(proxy="HTTPS://185.10.129.14:3128/")
+    session = AiohttpSession(proxy="SOCKS5://5.183.70.46:1080")
     # Инициализируем бот и диспетчер
     bot = Bot(
         token=config.tg_bot.token,
